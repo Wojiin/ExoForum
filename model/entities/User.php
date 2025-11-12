@@ -9,8 +9,13 @@ use App\Entity;
 
 final class User extends Entity{
 
-    private $id;
-    private $nickName;
+    private $id_user;
+    private $username;
+    private $registrationDate;
+    private $email;
+    private $password;
+    private $banned;
+    private $role;
 
     public function __construct($data){         
         $this->hydrate($data);        
@@ -19,8 +24,8 @@ final class User extends Entity{
     /**
      * Get the value of id
      */ 
-    public function getId(){
-        return $this->id;
+    public function getIdUser(){
+        return $this->id_user;
     }
 
     /**
@@ -28,30 +33,116 @@ final class User extends Entity{
      *
      * @return  self
      */ 
-    public function setId($id){
-        $this->id = $id;
+    public function setIdUser($id_user){
+        $this->id_user = $id_user;
         return $this;
     }
 
     /**
-     * Get the value of nickName
+     * Get the value of username
      */ 
-    public function getNickName(){
-        return $this->nickName;
+    public function getUsername(){
+        return $this->username;
     }
 
     /**
-     * Set the value of nickName
+     * Set the value of username
      *
      * @return  self
      */ 
-    public function setNickName($nickName){
-        $this->nickName = $nickName;
+    public function setUsername($username){
+        $this->username = $username;
+
+        return $this;
+    }
+    /**
+     * Get the value of registrationDate
+     */ 
+    public function getRegistrationDate(){
+        return $this->registrationDate;
+    }
+
+    /**
+     * Set the value of registrationDate
+     *
+     * @return  self
+     */ 
+    public function setRegistrationDate($registrationDate){
+        $this->registrationDate = $registrationDate;
+
+        return $this;
+    }
+        /**
+     * Get the value of email
+     */ 
+    public function getEmail(){
+        return $this->email;
+    }
+
+    /**
+     * Set the value of email
+     *
+     * @return  self
+     */ 
+    public function setEmail($email){
+        $this->email = $email;
+
+        return $this;
+    }
+        /**
+     * Get the value of password
+     */ 
+    public function getPassword(){
+        return $this->password;
+    }
+
+    /**
+     * Set the value of password
+     *
+     * @return  self
+     */ 
+    public function setPassword($password){
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of banned
+     */ 
+    public function getBanned(){
+        return $this->banned;
+    }
+
+    /**
+     * Set the value of banned
+     *
+     * @return  self
+     */ 
+    public function setBanned($banned){
+        $this->banned = $banned;
+
+        return $this;
+    }
+    /**
+     * Get the value of role
+     */ 
+    public function getRole(){
+        return $this->role;
+    }
+
+    /**
+     * Set the value of role
+     *
+     * @return  self
+     */ 
+    public function setRole($role){
+        $this->role = $role;
 
         return $this;
     }
 
     public function __toString() {
-        return $this->nickName;
+        return $this->username;
     }
 }

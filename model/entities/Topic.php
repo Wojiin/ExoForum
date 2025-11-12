@@ -9,10 +9,10 @@ use App\Entity;
 
 final class Topic extends Entity{
 
-    private $id;
+    private $id_topic;
     private $title;
-    private $user;
-    private $category;
+    private $idUser;
+    private $idCategory;
     private $creationDate;
     private $closed;
 
@@ -23,8 +23,8 @@ final class Topic extends Entity{
     /**
      * Get the value of id
      */ 
-    public function getId(){
-        return $this->id;
+    public function getIdTopic(){
+        return $this->id_topic;
     }
 
     /**
@@ -32,8 +32,8 @@ final class Topic extends Entity{
      *
      * @return  self
      */ 
-    public function setId($id){
-        $this->id = $id;
+    public function setIdTopic($id_topic){
+        $this->id_topic = $id_topic;
         return $this;
     }
 
@@ -57,17 +57,67 @@ final class Topic extends Entity{
     /**
      * Get the value of user
      */ 
-    public function getUser(){
-        return $this->user;
+    public function getIdUser(){
+        return $this->idUser;
     }
 
     /**
-     * Set the value of user
+     * Set the value of iduser
      *
      * @return  self
      */ 
-    public function setUser($user){
-        $this->user = $user;
+    public function setIdUser($idUser){
+        $this->idUser = $idUser;
+        return $this;
+    }
+
+        /**
+     * Get the value of idCategory
+     */ 
+    public function getIdCategory(){
+        return $this->idCategory;
+    }
+
+    /**
+     * Set the value of idCategory
+     *
+     * @return  self
+     */ 
+    public function setIdCategory($idCategory){
+        $this->idCategory = $idCategory;
+        return $this;
+    }
+    /**
+     * Get the value of creationDate
+     */ 
+    public function getCreationDate(){
+        return $this->creationDate;
+    }
+
+    /**
+     * Set the value of creationDate
+     *
+     * @return  self
+     */ 
+    public function setCreationDate($creationDate){
+        $this->creationDate = $creationDate;
+        return $this;
+    }
+
+    /**
+     * Get the value of closed
+     */ 
+    public function getClosed(){
+        return $this->closed;
+    }
+
+    /**
+     * Set the value of closed
+     *
+     * @return  self
+     */ 
+    public function setClosed($closed){
+        $this->closed = $closed;
         return $this;
     }
 
