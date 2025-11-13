@@ -33,7 +33,7 @@ abstract class Manager{
 
         $sql = "SELECT *
                 FROM ".$this->tableName." a
-                WHERE a.id_".$this->tableName." = :id
+                WHERE a.id = :id
                 ";
 
         return $this->getOneOrNullResult(
@@ -69,7 +69,7 @@ abstract class Manager{
     
     public function delete($id){
         $sql = "DELETE FROM ".$this->tableName."
-                WHERE id_".$this->tableName." = :id
+                WHERE id = :id
                 ";
 
         return DAO::delete($sql, ['id' => $id]); 

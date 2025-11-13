@@ -9,9 +9,10 @@ use App\Entity;
 
 final class Post extends Entity{
 
-    private $id_post;
+    private $id;
     private $title;
     private $idUser;
+    private $username;
     private $idTopic;
     private $creationDate;
     private $content;
@@ -24,9 +25,9 @@ final class Post extends Entity{
     /**
      * Get the value of id
      */ 
-    public function getIdPost()
+    public function getId()
     {
-        return $this->id_post;
+        return $this->id;
     }
 
     /**
@@ -34,9 +35,9 @@ final class Post extends Entity{
      *
      * @return  self
      */ 
-    public function setIdPost($id_post)
+    public function setId($id)
     {
-        $this->id_post = $id_post;
+        $this->id = $id;
 
         return $this;
     }
@@ -75,6 +76,23 @@ final class Post extends Entity{
     public function setIdUser($idUser){
         $this->idUser = $idUser;
         return $this;
+    }
+    /**
+     * Get the value of username
+     *
+     * @return  self
+     */
+    public function getUsername() {
+    return $this->username;
+    }
+    /**
+     * Set the value of username
+     *
+     * @return  self
+     */
+    public function setUsername($username) {
+    $this->username = $username;
+    return $this;
     }
     /**
      * Get the value of id_topic

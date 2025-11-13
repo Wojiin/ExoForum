@@ -9,9 +9,10 @@ use App\Entity;
 
 final class Topic extends Entity{
 
-    private $id_topic;
+    private $id;
     private $title;
     private $idUser;
+    private $username;
     private $idCategory;
     private $creationDate;
     private $closed;
@@ -23,8 +24,8 @@ final class Topic extends Entity{
     /**
      * Get the value of id
      */ 
-    public function getIdTopic(){
-        return $this->id_topic;
+    public function getId(){
+        return $this->id;
     }
 
     /**
@@ -32,8 +33,8 @@ final class Topic extends Entity{
      *
      * @return  self
      */ 
-    public function setIdTopic($id_topic){
-        $this->id_topic = $id_topic;
+    public function setId($id){
+        $this->id = $id;
         return $this;
     }
 
@@ -70,7 +71,23 @@ final class Topic extends Entity{
         $this->idUser = $idUser;
         return $this;
     }
-
+    /**
+     * Get the value of username
+     *
+     * @return  self
+     */
+    public function getUsername() {
+    return $this->username;
+    }
+    /**
+     * Set the value of username
+     *
+     * @return  self
+     */
+    public function setUsername($username) {
+    $this->username = $username;
+    return $this;
+    }
         /**
      * Get the value of idCategory
      */ 
