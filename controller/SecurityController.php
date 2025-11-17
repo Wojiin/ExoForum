@@ -106,7 +106,14 @@ class SecurityController extends AbstractController {
                 $_SESSION["error"] = "Les mots de passe ne correspondent pas ou sont trop courts.";
                 $error = true;
             }
- 
+
+            # Vérifie que le mot de passe soit robuste en utilisant l'expression régulière
+            $passwordRegex = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/';
+            if (!preg_match($passwordRegex, $pass1)) {
+                $_SESSION["error"] = "Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial.";
+                $error = true;
+            }
+
             # Si aucune erreur n'a été détectée
             if ($error == false) {
  
@@ -171,9 +178,6 @@ class SecurityController extends AbstractController {
             "view" => VIEW_DIR . "security/login.php",
             "meta_description" => "Connexion utilisateur",
             "data" => []
-        ];
-    
+        ]; 
     }
 }
-
-
