@@ -28,4 +28,16 @@ class TopicManager extends Manager{
             $this->className
         );
     }
+
+    public function findTopicsByUser($idUser) {
+
+        $sql = "SELECT *
+                FROM ".$this->tableName."
+                WHERE idUser = :idUser";
+
+        return $this->getMultipleResults(
+            DAO::select($sql, ["idUser" => $idUser]),
+            $this->className
+        );
+    }
 }

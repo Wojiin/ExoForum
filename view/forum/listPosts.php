@@ -7,6 +7,9 @@ $posts = $result["data"]["posts"];
 
     <?php 
     foreach($posts as $post){ ?><br>        
-            <p> <?= $post->getUsername()  ?> — Posté le <?= $post->getCreationDate() ?></p>
+            <p>Par <a href="index.php?ctrl=security&action=showProfile&id=<?= $post->getIdUser() ?>"><?= $post->getUsername() ?></a>
+              Posté le <?= $post->getCreationDate() ?></p>
             <p><?= $post->getContent() ?></p>        
-    <?php }
+    <?php }?>
+<a href="index.php?ctrl=forum&action=listTopicsByCategory&id=<?= $topic->getIdCategory() ?>">Retour à la liste des topics</a><br>
+<?php

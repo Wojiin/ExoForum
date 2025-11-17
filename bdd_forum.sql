@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS `category` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Listage des données de la table forum_quentin_maia.category : ~0 rows (environ)
+-- Listage des données de la table forum_quentin_maia.category : ~3 rows (environ)
 INSERT INTO `category` (`id`, `name`) VALUES
 	(1, 'Général'),
 	(2, 'Tutoriels'),
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS `post` (
   CONSTRAINT `post_ibfk_id_user` FOREIGN KEY (`idUser`) REFERENCES `user` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Listage des données de la table forum_quentin_maia.post : ~0 rows (environ)
+-- Listage des données de la table forum_quentin_maia.post : ~10 rows (environ)
 INSERT INTO `post` (`id`, `idUser`, `idTopic`, `creationDate`, `content`) VALUES
 	(1, 1, 1, '2024-01-10 09:06:00', 'Bonjour à tous — merci d\'avoir rejoint le forum ! Présentez-vous ici.'),
 	(2, 3, 1, '2024-01-11 10:15:00', 'Salut, moi c\'est Alice, ravie d\'être ici :)'),
@@ -58,23 +58,6 @@ INSERT INTO `post` (`id`, `idUser`, `idTopic`, `creationDate`, `content`) VALUES
 	(8, NULL, 4, '2024-04-22 09:00:00', 'Réponse anonyme / importée (utilisateur supprimé)'),
 	(9, 2, 3, '2024-04-02 09:30:00', 'Quelques astuces : nettoyer le cache, augmenter la mémoire, ...'),
 	(10, 4, 3, '2024-04-02 10:00:00', 'Merci pour les astuces, ça a aidé mon poste de travail.');
-
--- Listage de la structure de table forum_quentin_maia. report
-CREATE TABLE IF NOT EXISTS `report` (
-  `idUser` int NOT NULL,
-  `idTopic` int NOT NULL,
-  `reporting_date` datetime NOT NULL,
-  `commentary` text,
-  KEY `report_ibfk_id_topic` (`idTopic`) USING BTREE,
-  KEY `report_ibfk_id_user` (`idUser`) USING BTREE,
-  CONSTRAINT `report_ibfk_id_topic` FOREIGN KEY (`idTopic`) REFERENCES `topic` (`id`),
-  CONSTRAINT `report_ibfk_id_user` FOREIGN KEY (`idUser`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- Listage des données de la table forum_quentin_maia.report : ~0 rows (environ)
-INSERT INTO `report` (`idUser`, `idTopic`, `reporting_date`, `commentary`) VALUES
-	(4, 6, '2024-07-02 18:40:00', 'Contenu suspect / lien potentiellement malveillant — à vérifier.'),
-	(3, 5, '2024-06-16 08:00:00', 'Une phrase du règlement me semble ambiguë, merci de clarifier.');
 
 -- Listage de la structure de table forum_quentin_maia. topic
 CREATE TABLE IF NOT EXISTS `topic` (
@@ -91,7 +74,7 @@ CREATE TABLE IF NOT EXISTS `topic` (
   CONSTRAINT `topic_ibfk_id_user` FOREIGN KEY (`idUser`) REFERENCES `user` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Listage des données de la table forum_quentin_maia.topic : ~0 rows (environ)
+-- Listage des données de la table forum_quentin_maia.topic : ~6 rows (environ)
 INSERT INTO `topic` (`id`, `idUser`, `idCategory`, `title`, `creationDate`, `closed`) VALUES
 	(1, 1, 1, 'Bienvenue sur le forum', '2024-01-10 09:05:00', 'non'),
 	(2, 3, 2, 'Comment installer X sous Windows', '2024-03-03 10:00:00', 'non'),
@@ -109,10 +92,12 @@ CREATE TABLE IF NOT EXISTS `user` (
   `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `password` varchar(255) NOT NULL,
   `banned` varchar(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'non',
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `email` (`email`),
+  UNIQUE KEY `username` (`username`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Listage des données de la table forum_quentin_maia.user : ~0 rows (environ)
+-- Listage des données de la table forum_quentin_maia.user : ~5 rows (environ)
 INSERT INTO `user` (`id`, `role`, `username`, `registrationDate`, `email`, `password`, `banned`) VALUES
 	(1, 'admin', 'Admin_Quentin', '2024-01-10 09:00:00', 'admin@forum.test', 'e4abae53cc1cebe5fe89ea93882c699a5e71ab0bbf42a83b7d833975b61c4a41', 'non'),
 	(2, 'moderator', 'Mod_Maia', '2024-01-12 11:30:00', 'maia.mod@forum.test', '47df472a45e962fe28bf79f98e38a00fb3b556dcbbb6d47305b32ce949da7559', 'non'),

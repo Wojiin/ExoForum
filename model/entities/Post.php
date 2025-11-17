@@ -14,6 +14,7 @@ final class Post extends Entity{
     private $idUser;
     private $username;
     private $idTopic;
+    private $topicTitle;
     private $creationDate;
     private $content;
 
@@ -110,6 +111,26 @@ final class Post extends Entity{
         $this->idTopic = $idTopic;
         return $this;
     }
+
+    /**
+     * Get the value of topicTitle
+     *
+     * @return  self
+     */
+    public function getTopicTitle() {
+    return $this->topicTitle;
+    }
+
+    /**
+     * Set the value of topicTitle
+     *
+     * @return  self
+     */
+    public function setTopicTitle($title) {
+    $this->topicTitle = $title;
+    return $this;
+    }
+    
     /**
      * Get the value of creation_date
      */ 

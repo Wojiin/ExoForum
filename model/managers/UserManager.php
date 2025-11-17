@@ -13,4 +13,18 @@ class UserManager extends Manager{
     public function __construct(){
         parent::connect();
     }
+
+    /**
+     * Récupère un utilisateur par son email
+     */
+    public function findOneByEmail(string $email) {
+        $sql = "SELECT * 
+                FROM ".$this->tableName." 
+                WHERE email = :email";
+
+        return $this->getOneOrNullResult(
+            DAO::select($sql, ['email' => $email], false),
+            $this->className
+        );
+    }
 }

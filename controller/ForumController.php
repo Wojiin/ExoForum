@@ -1,23 +1,35 @@
 <?php
+
+# Déclare le namespace du contrôleur
 namespace Controller;
 
+# Importe les classes nécessaires pour la gestion de sessions et l'architecture MVC
 use App\Session;
 use App\AbstractController;
 use App\ControllerInterface;
+
+# Importe les Managers pour interagir avec les tables correspondantes dans la base de données
 use Model\Managers\CategoryManager;
 use Model\Managers\TopicManager;
 use Model\Managers\PostManager;
 
+# Définition de la classe ForumController qui hérite d'AbstractController et implémente ControllerInterface
 class ForumController extends AbstractController implements ControllerInterface{
 
+    # Méthode pour afficher la page principale du forum avec la liste des catégories
     public function index() {
         
-        // créer une nouvelle instance de CategoryManager
+        # Crée une nouvelle instance du CategoryManager pour interagir avec la table 'category'
         $categoryManager = new CategoryManager();
-        // récupérer la liste de toutes les catégories grâce à la méthode findAll de Manager.php (triés par nom)
+
+        # Récupère toutes les catégories de la base de données via la méthode findAll du manager
+        # Les catégories sont triées par nom dans l'ordre décroissant
         $categories = $categoryManager->findAll(["name", "DESC"]);
 
-        // le controller communique avec la vue "listCategories" (view) pour lui envoyer la liste des catégories (data)
+        # Retourne un tableau associatif pour communiquer avec la vue
+        # - 'view' : chemin de la vue à charger
+        # - 'meta_description' : description utilisée pour le SEO
+        # - 'data' : tableau contenant les données à afficher dans la vue (ici la liste des catégories)
         return [
             "view" => VIEW_DIR."forum/listCategories.php",
             "meta_description" => "Liste des catégories du forum",
@@ -27,13 +39,25 @@ class ForumController extends AbstractController implements ControllerInterface{
         ];
     }
 
+    # Méthode pour afficher les topics d'une catégorie spécifique
     public function listTopicsByCategory($id) {
 
+        # Crée une instance du TopicManager pour interagir avec la table 'topic'
         $topicManager = new TopicManager();
+
+        # Crée une instance du CategoryManager pour récupérer les informations de la catégorie
         $categoryManager = new CategoryManager();
+
+        # Récupère la catégorie correspondante à l'identifiant fourni
         $category = $categoryManager->findOneById($id);
+
+        # Récupère tous les topics associés à cette catégorie
         $topics = $topicManager->findTopicsByCategory($id);
 
+        # Retourne un tableau associatif pour la vue
+        # - 'view' : chemin de la vue pour lister les topics
+        # - 'meta_description' : description SEO pour la page des topics de cette catégorie
+        # - 'data' : données à passer à la vue (catégorie et topics)
         return [
             "view" => VIEW_DIR."forum/listTopics.php",
             "meta_description" => "Liste des topics par catégorie : ".$category,
@@ -43,20 +67,33 @@ class ForumController extends AbstractController implements ControllerInterface{
             ]
         ];
     }
+
+    # Méthode pour afficher les posts d'un topic spécifique
     public function listPostsByTopic($id) {
+
+        # Crée une instance du TopicManager pour récupérer les informations du topic
         $topicManager = new TopicManager();
+
+        # Crée une instance du PostManager pour récupérer les posts liés au topic
         $postManager = new PostManager();
 
+        # Récupère les informations du topic correspondant à l'identifiant fourni
         $topic = $topicManager->findOneById($id);
+
+        # Récupère tous les posts associés à ce topic
         $posts = $postManager->findPostsByTopic($id);
 
+        # Retourne un tableau associatif pour la vue
+        # - 'view' : chemin de la vue pour lister les posts
+        # - 'meta_description' : description SEO pour la page des posts de ce topic
+        # - 'data' : données à passer à la vue (topic et posts)
         return [
             "view" => VIEW_DIR."forum/listPosts.php",
             "meta_description" => "Liste des posts du topic : ".$topic,
             "data" => [
                 "topic" => $topic,
                 "posts" => $posts
-        ]
-    ];
-}
+            ]
+        ];
+    }
 }
