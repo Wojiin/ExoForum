@@ -150,15 +150,30 @@ class SecurityController extends AbstractController {
     # Méthode pour gérer la connexion utilisateur
         public function login() {
 
+    # Instancie UserManager pour gérer les utilisateurs
+    $userManager = new UserManager();
+
+    # Vérifie si le formulaire d'inscription a été envoyé
+    if (isset($_POST['submit'])) {
+
+            # Nettoie et filtre l'email fourni
+            $email    = filter_input(INPUT_POST, "email", FILTER_VALIDATE_EMAIL);
+            # Nettoie le mot de passe fourni
+            $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+
         # Retourne un tableau associatif pour la vue
         # - 'view' : chemin de la vue pour afficher la liste des utilisateurs
         # - 'meta_description' : description SEO de la page
         # - 'data' : données à passer à la vue (vide)
+        }
         return [
             "view" => VIEW_DIR . "security/login.php",
             "meta_description" => "Connexion utilisateur",
             "data" => []
         ];
+    
     }
 }
+
 
