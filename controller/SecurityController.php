@@ -77,61 +77,65 @@ class SecurityController extends AbstractController {
 
     # Méthode pour gérer l'inscription utilisateur
     public function register() {
-
+ 
     # Instancie UserManager pour gérer les utilisateurs
     $userManager = new UserManager();
-
+ 
     # Vérifie si le formulaire d'inscription a été envoyé
     if (isset($_POST['submit'])) {
-
+ 
         # Récupère et filtre les valeurs envoyées depuis le formulaire
         $username = filter_input(INPUT_POST, "username", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $email = filter_input(INPUT_POST, "email", FILTER_VALIDATE_EMAIL);
         $pass1 = filter_input(INPUT_POST, "pass1", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $pass2 = filter_input(INPUT_POST, "pass2", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-
+ 
         # Vérifie que tous les champs sont remplis
         if ($username && $email && $pass1 && $pass2) {
-
+ 
             $error = false;
-
+ 
             # Vérifie si un compte existe déjà avec cet email
             if ($userManager->findOneByEmail($email)) {
                 $_SESSION["error"] = "Cet email est déjà utilisé.";
                 $error = true;
             }
-
+ 
             # Vérifie que les mots de passe sont identiques et assez longs
             if ($pass1 != $pass2 || strlen($pass1) < 12) {
                 $_SESSION["error"] = "Les mots de passe ne correspondent pas ou sont trop courts.";
                 $error = true;
             }
-
+ 
             # Si aucune erreur n'a été détectée
             if ($error == false) {
-
+ 
                 # Hash du mot de passe avant insertion en base de données
                 $hash = password_hash($pass1, PASSWORD_DEFAULT);
-
+ 
+                # Date d'inscription au moment de la soumission
+                $registrationDate = date('Y-m-d');
+ 
                 # Ajout du nouvel utilisateur dans la base
                 $userManager->add([
                     "username" => $username,
                     "email"    => $email,
-                    "password" => $hash
+                    "password" => $hash,
+                    "registrationDate" => $registrationDate
                 ]);
-
+ 
                 # Message de confirmation + redirection vers la connexion
                 $_SESSION["success"] = "Inscription réussie ! Connectez-vous.";
                 header("Location: index.php?ctrl=security&action=login");
                 exit;
             }
-
+ 
         } else {
             # Message si un ou plusieurs champs sont vides
             $_SESSION["error"] = "Veuillez remplir tous les champs.";
         }
     }
-
+ 
         # Retourne un tableau associatif pour la vue
         # - 'view' : chemin de la vue pour afficher la liste des utilisateurs
         # - 'meta_description' : description SEO de la page
@@ -157,3 +161,4 @@ class SecurityController extends AbstractController {
         ];
     }
 }
+
