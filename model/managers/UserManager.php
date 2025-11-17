@@ -17,7 +17,7 @@ class UserManager extends Manager{
     /**
      * Récupère un utilisateur par son email
      */
-    public function findOneByEmail(string $email) {
+    public function findOneByEmail($email) {
         $sql = "SELECT * 
                 FROM ".$this->tableName." 
                 WHERE email = :email";
@@ -28,3 +28,4 @@ class UserManager extends Manager{
         );
     }
 }
+
