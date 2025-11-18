@@ -1,6 +1,12 @@
-<h1>BIENVENUE SUR LE FORUM</h1>
+<h1>ACCUEIL</h1>
+<?php
+    if(isset($_SESSION["user"])) {
+    echo "<p>Bienvenue ".App\Session::getUser()->getUsername()."</p>";
+    } else {
+        "<p>Bienvenue</p>";
+    }
+?>
 
-<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit ut nemo quia voluptas numquam, itaque ipsa soluta ratione eum temporibus aliquid, facere rerum in laborum debitis labore aliquam ullam cumque.</p>
 
 <p>
     <a href="index.php?ctrl=security&action=login">Se connecter</a>

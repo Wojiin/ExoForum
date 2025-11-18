@@ -3,7 +3,7 @@
     $topics = $result["data"]['topics']; 
 ?>
 
-<h1><?= $category->getName() ?></h1>
+<h2><?= $category->getName() ?></h2>
 
 <?php
 foreach($topics as $topic ){ ?> <br>
@@ -13,5 +13,18 @@ foreach($topics as $topic ){ ?> <br>
 <?php }
 ?>
 <br>
- <a href="index.php?ctrl=forum&action=index">Retour aux catégories</a>
+
+<h2>Ajouter un topic</h2>
+<!-- Formulaire pour ajouter un nouveau topic -->
+<form action="index.php?forum&action=addTopic&id=<?= $category->getId();?>" method="post">
+
+    <!-- Champ pour le titre du topic -->
+    <label for="title">Titre :</label>
+    <input type="text" id="title" name="title">
+    </select>
+    <!-- Bouton pour soumettre le formulaire -->
+    <button type="submit" name="submit">Ajouter</button>
+</form>
+    <br>
+<a href="index.php?ctrl=forum&action=index">Retour aux catégories</a>
 

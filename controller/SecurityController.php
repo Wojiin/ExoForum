@@ -84,7 +84,7 @@ class SecurityController extends AbstractController {
     # Vérifie si le formulaire d'inscription a été envoyé
     if (isset($_POST['submit'])) {
  
-        # Récupère et filtre les valeurs envoyées depuis le formulaire
+        # Récupère et filtre les valeurs envoyées depuis le formulaire pour contrer une faille XSS
         $username = filter_input(INPUT_POST, "username", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $email = filter_input(INPUT_POST, "email", FILTER_VALIDATE_EMAIL);
         $pass1 = filter_input(INPUT_POST, "pass1", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -126,7 +126,7 @@ class SecurityController extends AbstractController {
                 # Ajout du nouvel utilisateur dans la base
                 $userManager->add([
                     "username" => $username,
-                    "email"    => $email,
+                    "email" => $email,
                     "password" => $hash,
                     "registrationDate" => $registrationDate
                 ]);
@@ -155,7 +155,7 @@ class SecurityController extends AbstractController {
     }
     
     # Méthode pour gérer la connexion utilisateur
-        public function login() {
+    public function login() {
 
     # Instancie UserManager pour gérer les utilisateurs
     $userManager = new UserManager();
@@ -163,21 +163,51 @@ class SecurityController extends AbstractController {
     # Vérifie si le formulaire d'inscription a été envoyé
     if (isset($_POST['submit'])) {
 
-            # Nettoie et filtre l'email fourni
-            $email    = filter_input(INPUT_POST, "email", FILTER_VALIDATE_EMAIL);
-            # Nettoie le mot de passe fourni
-            $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        # Nettoie et filtre l'email fourni
+        $email = filter_input(INPUT_POST, "email", FILTER_VALIDATE_EMAIL);
+        # Nettoie le mot de passe fourni
+        $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
+        # Vérifie que tous les champs sont remplis
+        if ($email && $password) {
+            #Récupérer l'utilisateur par l'email
+            $user = ($userManager->findOneByEmail($email));
+           
+            # Vérifie le mot de passe
+            if($user) {
+                $hash = $user->getPassword();
 
-        # Retourne un tableau associatif pour la vue
-        # - 'view' : chemin de la vue pour afficher la liste des utilisateurs
-        # - 'meta_description' : description SEO de la page
-        # - 'data' : données à passer à la vue (vide)
+                if(password_verify($password, $hash)) {
+                    $_SESSION["user"] = $user;
+                    header("Location: index.php?ctrl=home&action=index");
+                } else {
+                    $_SESSION["error"] = "Erreur de connexion";
+                    header("Location: index.php?ctrl=security&action=login");
+                    exit;
+                }
+            } else {
+                $_SESSION["error"] = "Erreur de connexion";
+                header("Location: index.php?ctrl=security&action=login");
+                exit;
+            }
         }
-        return [
-            "view" => VIEW_DIR . "security/login.php",
-            "meta_description" => "Connexion utilisateur",
-            "data" => []
-        ]; 
     }
+            # Retourne un tableau associatif pour la vue
+            # - 'view' : chemin de la vue pour afficher la liste des utilisateurs
+            # - 'meta_description' : description SEO de la page
+            # - 'data' : données à passer à la vue (vide)
+            return [
+                "view" => VIEW_DIR . "security/login.php",
+                "meta_description" => "Connexion utilisateur",
+                "data" => []
+            ]; 
+    }
+    # Méthode pour gérer la déconnexion utilisateur
+        public function logout() {
+            # Supprime le tableau user de la session
+            unset($_SESSION["user"]);
+            header("Location: index.php?ctrl=home&action=index");
+            exit;
+    }
+
 }

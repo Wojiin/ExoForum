@@ -96,4 +96,72 @@ class ForumController extends AbstractController implements ControllerInterface{
             ]
         ];
     }
+
+    # Méthode pour ajouter une catégorie
+    public function addCategory(){
+
+    # Instancie CategoryManager pour gérer les catégories
+    $categoryManager = new CategoryManager();
+
+    # Vérifie si le formulaire d'ajout a été envoyé
+    if (isset($_POST['submit'])) {
+
+        # Récupère et filtre les valeurs envoyées depuis le formulaire pour contrer une faille XSS
+        $name = filter_input(INPUT_POST, "name", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+ 
+        # Vérifie que tous les champs sont remplis
+        if ($name) { 
+                # Ajout de la nouvelle catégorie dans la base
+                $categoryManager->add([
+                    "name" => $name
+                ]);
+                # Message de confirmation + redirection vers la liste des catégories
+                $_SESSION["success"] = "Ajout réussi !";
+                header("Location: index.php?ctrl=forum&action=index");
+                exit;
+            } else {
+                $_SESSION["error"] = "Veuillez remplir le champ";
+            }
+        }
+    }
+    # Méthode pour ajouter un topic
+    public function addTopic($id){
+
+    # Instancie TopicManager pour gérer les catégories
+    $topicManager = new TopicManager();
+    
+    # Vérifie si le formulaire d'ajout a été envoyé
+    if (isset($_POST['submit'])) {
+
+        # Récupère et filtre les valeurs envoyées depuis le formulaire pour contrer une faille XSS
+        $title = filter_input(INPUT_POST, "title", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+ 
+        # Vérifie que tous les champs sont remplis
+        if ($title) { 
+                $creationDate = date('Y-m-d');
+                $category = findOnebyId($id);
+
+                # Ajout du nouveau topic dans la base
+                $topicManager->add([
+                    "title" => $title,
+                    "idCategory" => $id(),
+                    
+                    "idUser" => $this->getUserId(),
+                    "username" => $this->getUsername(),
+                    "creationDate" => $creationDate,
+
+                ]);
+                # Message de confirmation + redirection vers la liste des catégories
+                $_SESSION["success"] = "Ajout réussi !";
+                header("Location: index.php?ctrl=forum&action=listTopicsByCategory&id=");
+                exit;
+            } else {
+                $_SESSION["error"] = "Veuillez remplir le champ";
+            }
+        }
+    }
+
+
+
 }
+    

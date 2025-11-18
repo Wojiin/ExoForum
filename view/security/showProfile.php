@@ -8,7 +8,7 @@ $posts  = $result["data"]["posts"];
 
 <p>Pseudo : <?= $user->getUsername() ?></p>
 <p>Email : <?= $user->getEmail() ?></p>
-<p>Date d'inscription :> <?= $user->getRegistrationDate() ?></p>
+<p>Date d'inscription : <?= $user->getRegistrationDate() ?></p>
 <p>Rôle : <?= $user->getRole() ?></p>
 <p>Banni : <?= $user->getBanned() ?></p>
 

@@ -1,8 +1,8 @@
 -- --------------------------------------------------------
 -- Hôte:                         127.0.0.1
--- Version du serveur:           8.4.3 - MySQL Community Server - GPL
+-- Version du serveur:           8.0.30 - MySQL Community Server - GPL
 -- SE du serveur:                Win64
--- HeidiSQL Version:             12.8.0.6908
+-- HeidiSQL Version:             12.1.0.6537
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -86,7 +86,7 @@ INSERT INTO `topic` (`id`, `idUser`, `idCategory`, `title`, `creationDate`, `clo
 -- Listage de la structure de table forum_quentin_maia. user
 CREATE TABLE IF NOT EXISTS `user` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `role` varchar(50) NOT NULL,
+  `role` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'ROLE_USER',
   `username` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `registrationDate` datetime NOT NULL,
   `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
@@ -95,15 +95,16 @@ CREATE TABLE IF NOT EXISTS `user` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Listage des données de la table forum_quentin_maia.user : ~5 rows (environ)
+-- Listage des données de la table forum_quentin_maia.user : ~6 rows (environ)
 INSERT INTO `user` (`id`, `role`, `username`, `registrationDate`, `email`, `password`, `banned`) VALUES
-	(1, 'admin', 'Admin_Quentin', '2024-01-10 09:00:00', 'admin@forum.test', 'e4abae53cc1cebe5fe89ea93882c699a5e71ab0bbf42a83b7d833975b61c4a41', 'non'),
-	(2, 'moderator', 'Mod_Maia', '2024-01-12 11:30:00', 'maia.mod@forum.test', '47df472a45e962fe28bf79f98e38a00fb3b556dcbbb6d47305b32ce949da7559', 'non'),
-	(3, 'member', 'alice', '2024-03-02 15:20:00', 'alice@example.test', '21c0f1f1beb75d904c5ba3b332fb4b256f78d76a5d9846089692a0b51959427b', 'non'),
-	(4, 'member', 'bob', '2024-04-18 08:05:00', 'bob@example.test', '2f31135ee63dd7ca3065ea933ca44449f176d255d548b2c6489a370840a5cfdf', 'non'),
-	(5, 'member', 'charlie', '2024-05-10 20:45:00', 'charlie@example.test', '92287277c7aa523e555526c996229f3e9c78462b0fcc0acfe82e59d5973086e1', 'oui');
+	(1, 'ROLE_ADMIN', 'Admin_Quentin', '2024-01-10 09:00:00', 'admin@forum.test', 'e4abae53cc1cebe5fe89ea93882c699a5e71ab0bbf42a83b7d833975b61c4a41', 'non'),
+	(2, 'ROLE_ADMIN', 'Mod_Maia', '2024-01-12 11:30:00', 'maia.mod@forum.test', '47df472a45e962fe28bf79f98e38a00fb3b556dcbbb6d47305b32ce949da7559', 'non'),
+	(3, 'ROLE_USER', 'alice', '2024-03-02 15:20:00', 'alice@example.test', '21c0f1f1beb75d904c5ba3b332fb4b256f78d76a5d9846089692a0b51959427b', 'non'),
+	(4, 'ROLE_USER', 'bob', '2024-04-18 08:05:00', 'bob@example.test', '2f31135ee63dd7ca3065ea933ca44449f176d255d548b2c6489a370840a5cfdf', 'non'),
+	(5, 'ROLE_USER', 'charlie', '2024-05-10 20:45:00', 'charlie@example.test', '92287277c7aa523e555526c996229f3e9c78462b0fcc0acfe82e59d5973086e1', 'oui'),
+	(6, 'ROLE_USER', 'QuentinMaia', '2025-11-18 00:00:00', 'quentin@example.fr', '$2y$10$.CWm4kKLSPoNW8q7GlmP1OAoLh53lShR9Pxb2Z1nCsrsHzU2MaDJe', 'non');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

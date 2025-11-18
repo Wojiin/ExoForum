@@ -18,30 +18,29 @@
                 <h3 class="message" style="color: green"><?= App\Session::getFlash("success") ?></h3>
                 <header>
                     <nav>
-                        <div id="nav-left">
+                        <!-- <div id="nav-left">
                             <a href="/">Accueil</a>
-                            <?php
-                            if(App\Session::isAdmin()){
+                             <?php
+                           # if(App\Session::isAdmin()){
                                 ?>
                                 <a href="index.php?ctrl=home&action=users">Voir la liste des gens</a>
-                            <?php } ?>
-                        </div>
+                           # <?php #} ?> 
+                        </div> -->
                         <div id="nav-right">
                         <?php
                             // si l'utilisateur est connecté 
                             if(App\Session::getUser()){
                                 ?>
-                                <a href="index.php?ctrl=security&action=profile"><span class="fas fa-user"></span>&nbsp;<?= App\Session::getUser()?></a>
+                                <a href="index.php?ctrl=security&action=showProfile&id=<?= App\Session::getUser()->getId()?>"><span class="fas fa-user"></span>&nbsp;<?= App\Session::getUser()?></a>
                                 <a href="index.php?ctrl=security&action=logout">Déconnexion</a>
+                                <a href="index.php?ctrl=forum&action=index">Liste des catégories</a>
+                                <a href="index.php?ctrl=security&action=listUsers">Liste des utilisateurs</a>
                                 <?php
                             }
                             else{
                                 ?>
                                 <a href="index.php?ctrl=security&action=login">Connexion</a>
                                 <a href="index.php?ctrl=security&action=register">Inscription</a>
-                                <a href="index.php?ctrl=forum&action=index">Liste des catégories</a>
-                                <a href="index.php?ctrl=security&action=listUsers">Liste des utilisateurs</a>
-
                             <?php
                             }
                         ?>
