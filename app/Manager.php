@@ -66,6 +66,35 @@ abstract class Manager{
             die();
         }
     }
+
+public function updateF($data, $id)
+    {
+        # On initie un tableau
+        $setStatements = [];
+
+        # On boucle chaque entrée de $data (le contenu de l'enregistrement associé à $id) 
+        foreach ($data as $key => $value) {
+            # On insère les nouvelles données dans le tableau $setStatements
+            $setStatements[] = "$key = :$key";
+        }
+        # On rend accessible les données de $setStatements[] pour la requête
+        $setClause = implode(',', $setStatements);
+        
+        #La requête
+        $sql = "UPDATE " . $this->tableName . "
+        SET " . $setClause . "
+        WHERE id_" . $this->tableName . " = :id
+        ";
+ 
+        
+        try {
+            $data['id'] = $id;
+            return DAO::update($sql, $data);
+        } catch (\PDOException $e) {
+            echo $e->getMessage();
+            die();
+        }
+    }
     
     public function delete($id){
         $sql = "DELETE FROM ".$this->tableName."

@@ -156,7 +156,7 @@ class SecurityController extends AbstractController {
 
     # Méthode pour supprimer l'utilisateur
     public function deleteUser($id) {
-    $userManager = new \Model\Managers\UserManager();
+    $userManager = new UserManager();
 
     if($id){
         $userManager->delete($id);

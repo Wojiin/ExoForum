@@ -21,15 +21,33 @@ foreach($posts as $post){
     $username = $user->getUsername(); ?>        
 
      <!-- Affiche l'auteur et la date du post -->
-    <p>Par <a href="index.php?ctrl=security&action=showProfile&id=<?= $post->getIdUser() ?>">
+    <br><h4>Par <a href="index.php?ctrl=security&action=showProfile&id=<?= $post->getIdUser() ?>">
         <?= $username ?>
     </a>
-    Posté le <?= $post->getCreationDate() ?></p>
+    Posté le <?= $post->getCreationDate() ?></h4>
 
     <!-- Affiche le contenu du post -->
     <p><?= $post->getContent() ?></p><br>       
-<?php } ?><br>
+<?php
 
+    if ($_SESSION['user']->getId() == $post->getIdUser()) {
+        ?> 
+<h3>Modifier ce post</h3>
+<!-- Formulaire pour modifier un post dans le topic -->
+<form action="index.php?ctrl=forum&action=updatePost&id=<?= $topic->getId(); ?>" method="post">
+
+    <!-- Champ pour saisir le  nouveau contenu du post -->
+    <label for="content">Votre message :</label><br>
+    <textarea id="content" name="content"></textarea><br>
+
+    <!-- Bouton pour soumettre le formulaire -->
+    <button type="submit" name="submit">Envoyer</button>
+</form>
+<?php
+    }
+         
+}?><br>
+    
 <h2>Ajouter un nouveau post</h2>
 
 <!-- Formulaire pour ajouter un post dans le topic -->

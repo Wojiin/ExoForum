@@ -201,5 +201,48 @@ class ForumController extends AbstractController implements ControllerInterface{
             }
         }
     }
+
+    # Méthode pour mettre à jour un post
+    public function updatePost($id){
+
+    # Instancie les managers pour gérer les posts
+    $topicManager = new TopicManager();
+    $postManager = new PostManager();
+
+    # Récupère le topic concerné
+    $topic = $topicManager->findOneById($id);
+    # Récupère le post concerné
+    $post = $postManager->findOneById($id);
+    # Récupère l'id du post
+    $postId = $post->getId();
+
+    # Vérifie si le formulaire d'update a été envoyé
+    if (isset($_POST['submit'])) {
+
+        # Récupère et filtre les valeurs envoyées depuis le formulaire pour contrer une faille XSS
+        $content = filter_input(INPUT_POST, "content", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+ 
+        # Vérifie que tous les champs sont remplis
+        if ($content) {
+
+                # Mise à jour de la catégorie dans la base
+                $postManager->updateF([
+                    "content" => $content
+                ],
+                $content
+            );
+                
+                # Message de confirmation + redirection vers la liste posts
+                $_SESSION["success"] = "Mise à jour réussie !";
+                header("Location: index.php?ctrl=forum&action=listPostsByTopic&id=".$topic->getId());
+                exit;
+            } else {
+                # Message d'erreur + redirection vers la liste posts
+                $_SESSION["error"] = "Aucun changement !";
+                header("Location: index.php?ctrl=forum&action=listPostsByTopic&id=".$topic->getId());
+                exit;
+            }
+        }
+    } 
 }
     
