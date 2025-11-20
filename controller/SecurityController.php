@@ -153,7 +153,20 @@ class SecurityController extends AbstractController {
             "data" => []
         ];
     }
-    
+
+    # Méthode pour supprimer l'utilisateur
+    public function deleteUser($id) {
+    $userManager = new \Model\Managers\UserManager();
+
+    if($id){
+        $userManager->delete($id);
+        $_SESSION["success"] = "Utilisateur supprimé !";
+
+    header("Location: index.php?ctrl=security&action=listUsers");
+    exit;
+        }
+    }
+
     # Méthode pour gérer la connexion utilisateur
     public function login() {
 
