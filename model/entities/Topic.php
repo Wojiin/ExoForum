@@ -12,7 +12,6 @@ final class Topic extends Entity{
     private $id;
     private $title;
     private $idUser;
-    private $username;
     private $idCategory;
     private $creationDate;
     private $closed;
@@ -71,23 +70,7 @@ final class Topic extends Entity{
         $this->idUser = $idUser;
         return $this;
     }
-    /**
-     * Get the value of username
-     *
-     * @return  self
-     */
-    public function getUsername() {
-    return $this->username;
-    }
-    /**
-     * Set the value of username
-     *
-     * @return  self
-     */
-    public function setUsername($username) {
-    $this->username = $username;
-    return $this;
-    }
+
         /**
      * Get the value of idCategory
      */ 

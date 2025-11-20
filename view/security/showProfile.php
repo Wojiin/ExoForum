@@ -2,6 +2,8 @@
 $user = $result["data"]["user"];
 $topics = $result["data"]["topics"];
 $posts  = $result["data"]["posts"];
+use Model\Managers\TopicManager;
+$topicManager = new TopicManager();
 ?>
 
 <h1>Profil de <?= $user->getUsername() ?></h1>
@@ -23,20 +25,22 @@ $posts  = $result["data"]["posts"];
 
 <h2>Posts publiés</h2>
 
-    <?php foreach ($posts as $post) { ?>
-        <div>
-            <br>
-            <p>
-                Dans : 
-                <a href="index.php?ctrl=forum&action=listPostsByTopic&id=<?= $post->getIdTopic() ?>">
-                    <?= $post->getTopicTitle() ?>
-                </a>
-            </p>
-            <p><?= $post->getContent() ?></p>
-            Posté le <?= $post->getCreationDate() ?>
-            <br>
-        </div>
-    <?php } ?>
+<?php foreach ($posts as $post) { 
+    $topic = $topicManager->findOneById($post->getIdTopic());
+?>
+    <div>
+        <br>
+        <p>
+            Dans : 
+            <a href="index.php?ctrl=forum&action=listPostsByTopic&id=<?= $post->getIdTopic() ?>">
+                <?= $topic->getTitle() ?>
+            </a>
+        </p>
+        <p><?= $post->getContent() ?></p>
+        Posté le <?= $post->getCreationDate() ?>
+        <br>
+    </div>
+<?php } ?>
 
 
 <br>

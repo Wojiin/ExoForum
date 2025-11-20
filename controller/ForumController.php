@@ -124,44 +124,82 @@ class ForumController extends AbstractController implements ControllerInterface{
             }
         }
     }
+
     # Méthode pour ajouter un topic
     public function addTopic($id){
 
-    # Instancie TopicManager pour gérer les catégories
-    $topicManager = new TopicManager();
-    
-    # Vérifie si le formulaire d'ajout a été envoyé
-    if (isset($_POST['submit'])) {
+        $topicManager = new TopicManager();
+        $categoryManager = new CategoryManager();
 
-        # Récupère et filtre les valeurs envoyées depuis le formulaire pour contrer une faille XSS
-        $title = filter_input(INPUT_POST, "title", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
- 
-        # Vérifie que tous les champs sont remplis
-        if ($title) { 
-                $creationDate = date('Y-m-d');
-                $category = findOnebyId($id);
+        # Vérifie si le formulaire a été soumis
+        if (isset($_POST['submit'])) {
 
-                # Ajout du nouveau topic dans la base
+            # Filtre le titre
+            $title = filter_input(INPUT_POST, "title", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+            # Si le champ est rempli
+            if ($title) { 
+             
+                # Récupère l'utilisateur connecté
+                $user = \App\Session::getUser();
+
+                # Récupère la catégorie
+                $category = $categoryManager->findOneById($id);
+
+                # Ajout en base
                 $topicManager->add([
                     "title" => $title,
-                    "idCategory" => $id(),
-                    
-                    "idUser" => $this->getUserId(),
-                    "username" => $this->getUsername(),
-                    "creationDate" => $creationDate,
-
+                    "idCategory" => $category->getId(),     
+                    "idUser" => $user->getId()      
                 ]);
-                # Message de confirmation + redirection vers la liste des catégories
+
                 $_SESSION["success"] = "Ajout réussi !";
-                header("Location: index.php?ctrl=forum&action=listTopicsByCategory&id=");
+                header("Location: index.php?ctrl=forum&action=listTopicsByCategory&id=".$id);
                 exit;
-            } else {
+            } 
+            # Si titre vide
+            else {
                 $_SESSION["error"] = "Veuillez remplir le champ";
             }
         }
     }
 
+    # Méthode pour ajouter un post
+    public function addPost($id) {
+        $topicManager = new TopicManager();
+        $postManager = new PostManager();
 
+        # Vérifie si le formulaire a été soumis
+        if (isset($_POST['submit'])) {
 
+            # Récupère et filtre le contenu du formulaire
+            $content = filter_input(INPUT_POST, "content", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+            # Si le champ est rempli
+            if ($content) {
+                # Récupère l'utilisateur connecté
+                $user = \App\Session::getUser();
+
+                # Récupère le topic concerné
+                $topic = $topicManager->findOneById($id);
+
+                # Ajout en base
+                $postManager->add([
+                    "content" => $content,
+                    "idUser" => $user->getId(),
+                    "idTopic" => $topic->getId()
+                ]);
+
+                # Message de confirmation + redirection vers le topic
+                $_SESSION["success"] = "Ajout réussi !";
+                header("Location: index.php?ctrl=forum&action=listPostsByTopic&id=".$topic->getId());
+                exit;
+            } 
+            # Si le champ est vide
+            else {
+                $_SESSION["error"] = "Veuillez remplir le champ";
+            }
+        }
+    }
 }
     

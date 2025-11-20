@@ -10,11 +10,8 @@ use App\Entity;
 final class Post extends Entity{
 
     private $id;
-    private $title;
     private $idUser;
-    private $username;
     private $idTopic;
-    private $topicTitle;
     private $creationDate;
     private $content;
 
@@ -42,25 +39,6 @@ final class Post extends Entity{
 
         return $this;
     }
-    /**
-     * Get the value of title
-     */ 
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    /**
-     * Set the value of title
-     *
-     * @return  self
-     */ 
-    public function setTitle($title)
-    {
-        $this->title = $title;
-
-        return $this;
-    }
 
     /**
      * Get the value of id_user
@@ -78,23 +56,7 @@ final class Post extends Entity{
         $this->idUser = $idUser;
         return $this;
     }
-    /**
-     * Get the value of username
-     *
-     * @return  self
-     */
-    public function getUsername() {
-    return $this->username;
-    }
-    /**
-     * Set the value of username
-     *
-     * @return  self
-     */
-    public function setUsername($username) {
-    $this->username = $username;
-    return $this;
-    }
+
     /**
      * Get the value of id_topic
      */ 
@@ -112,24 +74,6 @@ final class Post extends Entity{
         return $this;
     }
 
-    /**
-     * Get the value of topicTitle
-     *
-     * @return  self
-     */
-    public function getTopicTitle() {
-    return $this->topicTitle;
-    }
-
-    /**
-     * Set the value of topicTitle
-     *
-     * @return  self
-     */
-    public function setTopicTitle($title) {
-    $this->topicTitle = $title;
-    return $this;
-    }
     
     /**
      * Get the value of creation_date
