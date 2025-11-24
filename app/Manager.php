@@ -67,30 +67,33 @@ abstract class Manager{
         }
     }
 
-public function updateF($data, $id)
+    public function updateF($data, $id)
     {
-        # On initie un tableau
+        # Initialise un tableau pour stocker les parties "clé = :clé"
         $setStatements = [];
 
-        # On boucle chaque entrée de $data (le contenu de l'enregistrement associé à $id) 
+        # Transforme chaque entrée de $data en instruction SQL "clé = :clé"
         foreach ($data as $key => $value) {
-            # On insère les nouvelles données dans le tableau $setStatements
             $setStatements[] = "$key = :$key";
         }
-        # On rend accessible les données de $setStatements[] pour la requête
+
+        # Convertit le tableau en chaîne utilisable dans la requête SQL
         $setClause = implode(',', $setStatements);
         
-        #La requête
+        # Construit la requête SQL de mise à jour
         $sql = "UPDATE " . $this->tableName . "
-        SET " . $setClause . "
-        WHERE id_" . $this->tableName . " = :id
-        ";
- 
-        
+                SET " . $setClause . "
+                WHERE id_" . $this->tableName . " = :id";
+
         try {
+            # Ajoute l'id à $data pour l'utiliser dans la requête
             $data['id'] = $id;
+
+            # Exécute la requête via DAO::update()
             return DAO::update($sql, $data);
-        } catch (\PDOException $e) {
+        } 
+        catch (\PDOException $e) {
+            # Affiche l'erreur SQL si échec et stoppe le script
             echo $e->getMessage();
             die();
         }
