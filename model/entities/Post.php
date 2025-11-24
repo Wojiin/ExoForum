@@ -9,9 +9,9 @@ use App\Entity;
 
 final class Post extends Entity{
 
-    private $id;
-    private $idUser;
-    private $idTopic;
+    private $id_post;
+    private $user_id;
+    private $topic_id;
     private $creationDate;
     private $content;
 
@@ -21,60 +21,59 @@ final class Post extends Entity{
     }
 
     /**
-     * Get the value of id
+     * Get the value of id_post
      */ 
-    public function getId()
+    public function getId_post()
     {
-        return $this->id;
+        return $this->id_post;
     }
 
     /**
-     * Set the value of id
+     * Set the value of id_post
      *
      * @return  self
      */ 
-    public function setId($id)
+    public function setId_post($id_post)
     {
-        $this->id = $id;
+        $this->id_post = $id_post;
 
         return $this;
     }
 
     /**
-     * Get the value of id_user
+     * Get the value of user_id
      */ 
-    public function getIdUser(){
-        return $this->idUser;
+    public function getUser_id(){
+        return $this->user_id;
     }
 
     /**
-     * Set the value of id_user
+     * Set the value of user_id
      *
      * @return  self
      */ 
-    public function setIdUser($idUser){
-        $this->idUser = $idUser;
+    public function setUser_id($user_id){
+        $this->user_id = $user_id;
         return $this;
     }
 
     /**
-     * Get the value of id_topic
+     * Get the value of topic_id
      */ 
-    public function getIdTopic(){
-        return $this->idTopic;
+    public function getTopic_id(){
+        return $this->topic_id;
     }
 
     /**
-     * Set the value of id_topic
+     * Set the value of topic_id
      *
      * @return  self
      */ 
-    public function setIdTopic($idTopic){
-        $this->idTopic = $idTopic;
+    public function setTopic_id($topic_id){
+        $this->topic_id = $topic_id;
         return $this;
     }
 
-    
     /**
      * Get the value of creation_date
      */ 
@@ -109,6 +108,6 @@ final class Post extends Entity{
     }
 
     public function __toString(){
-        return $this->title;
+        return $this->content;
     }
 }

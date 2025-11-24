@@ -33,8 +33,8 @@ abstract class Manager{
 
         $sql = "SELECT *
                 FROM ".$this->tableName." a
-                WHERE a.id = :id
-                ";
+                WHERE a.id_".$this->tableName." = :id
+                "; 
 
         return $this->getOneOrNullResult(
             DAO::select($sql, ['id' => $id], false), 
@@ -42,22 +42,15 @@ abstract class Manager{
         );
     }
 
-    //$data = ['username' => 'Squalli', 'password' => 'dfsyfshfbzeifbqefbq', 'email' => 'sql@gmail.com'];
-
     public function add($data){
-        //$keys = ['username' , 'password', 'email']
         $keys = array_keys($data);
-        //$values = ['Squalli', 'dfsyfshfbzeifbqefbq', 'sql@gmail.com']
         $values = array_values($data);
-        //"username,password,email"
+
         $sql = "INSERT INTO ".$this->tableName."
                 (".implode(',', $keys).") 
                 VALUES
                 ('".implode("','",$values)."')";
-                //"'Squalli', 'dfsyfshfbzeifbqefbq', 'sql@gmail.com'"
-        /*
-            INSERT INTO user (username,password,email) VALUES ('Squalli', 'dfsyfshfbzeifbqefbq', 'sql@gmail.com') 
-        */
+
         try{
             return DAO::insert($sql);
         }
@@ -72,28 +65,21 @@ abstract class Manager{
         # Initialise un tableau pour stocker les parties "clé = :clé"
         $setStatements = [];
 
-        # Transforme chaque entrée de $data en instruction SQL "clé = :clé"
         foreach ($data as $key => $value) {
             $setStatements[] = "$key = :$key";
         }
 
-        # Convertit le tableau en chaîne utilisable dans la requête SQL
         $setClause = implode(',', $setStatements);
         
-        # Construit la requête SQL de mise à jour
         $sql = "UPDATE " . $this->tableName . "
                 SET " . $setClause . "
-                WHERE id_" . $this->tableName . " = :id";
+                WHERE id_" . $this->tableName . " = :id"; 
 
         try {
-            # Ajoute l'id à $data pour l'utiliser dans la requête
             $data['id'] = $id;
-
-            # Exécute la requête via DAO::update()
             return DAO::update($sql, $data);
         } 
         catch (\PDOException $e) {
-            # Affiche l'erreur SQL si échec et stoppe le script
             echo $e->getMessage();
             die();
         }
@@ -101,8 +87,8 @@ abstract class Manager{
     
     public function delete($id){
         $sql = "DELETE FROM ".$this->tableName."
-                WHERE id = :id
-                ";
+                WHERE id_".$this->tableName." = :id
+                "; 
 
         return DAO::delete($sql, ['id' => $id]); 
     }

@@ -14,25 +14,25 @@ class PostManager extends Manager {
         parent::connect();
     }
 
-
     public function findPostsByTopic($idTopic) {
-    $sql = "SELECT p.*, u.username 
-            FROM ".$this->tableName." p
-            INNER JOIN user u ON p.idUser = u.id 
-            WHERE idTopic = :idTopic";
+        $sql = "SELECT p.*, u.username 
+                FROM ".$this->tableName." p
+                INNER JOIN user u ON p.user_id = u.id_user 
+                WHERE p.topic_id = :idTopic";
 
         return $this->getMultipleResults(
             DAO::select($sql, ['idTopic' => $idTopic]),
             $this->className
         );
     }
+
     public function findPostsByUser($idUser) {
 
         $sql = "SELECT p.*, u.username, t.title AS topicTitle
                 FROM post p
-                INNER JOIN user u ON p.idUser = u.id
-                INNER JOIN topic t ON p.idTopic = t.id
-                WHERE p.idUser = :idUser";
+                INNER JOIN user u ON p.user_id = u.id_user
+                INNER JOIN topic t ON p.topic_id = t.id_topic
+                WHERE p.user_id = :idUser";
 
         return $this->getMultipleResults(
             DAO::select($sql, ['idUser' => $idUser]),
