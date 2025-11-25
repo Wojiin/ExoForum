@@ -54,9 +54,13 @@ if($action == "ajax"){ //si l'action était ajax
 }
 else{
     ob_start();//démarre un buffer (tampon de sortie)
-    $meta_description = $result['meta_description'];
+
+    // sécurisation pour éviter les warnings si la clé n'existe pas
+    $meta_description = $result['meta_description'] ?? "";
+
     /* la vue s'insère dans le buffer qui devra être vidé au milieu du layout */
-    include($result['view']);
+    include($result['view'] ?? VIEW_DIR . "home.php");
+
     /* je place cet affichage dans une variable */
     $page = ob_get_contents();
     /* j'efface le tampon */

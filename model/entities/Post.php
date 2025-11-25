@@ -3,110 +3,95 @@ namespace Model\Entities;
 
 use App\Entity;
 
-/*
-    En programmation orientée objet, une classe finale (final class) est une classe que vous ne pouvez pas étendre, c'est-à-dire qu'aucune autre classe ne peut hériter de cette classe. En d'autres termes, une classe finale ne peut pas être utilisée comme classe parente.
-*/
-
+# Entité représentant un post de forum
 final class Post extends Entity{
 
-    private $id_post;
-    private $user_id;
-    private $topic_id;
+    # Identifiant unique du post
+    private $id;
+
+    # Relation vers l'utilisateur ayant publié le post
+    private $user;
+
+    # Relation vers le topic dans lequel est publié le post
+    private $topic;
+
+    # Date de création du post
     private $creationDate;
+
+    # Contenu du post
     private $content;
 
-    // chaque entité aura le même constructeur grâce à la méthode hydrate (issue de App\Entity)
+    # Constructeur : hydrate l'objet avec les données fournies
     public function __construct($data){         
         $this->hydrate($data);        
     }
 
-    /**
-     * Get the value of id_post
-     */ 
-    public function getId_post()
-    {
-        return $this->id_post;
+    # Retourne l'id du post
+    public function getId(){
+        return $this->id;
     }
 
-    /**
-     * Set the value of id_post
-     *
-     * @return  self
-     */ 
-    public function setId_post($id_post)
-    {
-        $this->id_post = $id_post;
-
+    # Définit l'id du post
+    public function setId($id){
+        $this->id = $id;
         return $this;
     }
 
-    /**
-     * Get the value of user_id
-     */ 
-    public function getUser_id(){
-        return $this->user_id;
+    # Retourne l'utilisateur associé au post
+    public function getUser(){
+        return $this->user;
     }
 
-    /**
-     * Set the value of user_id
-     *
-     * @return  self
-     */ 
-    public function setUser_id($user_id){
-        $this->user_id = $user_id;
+    # Définit l'utilisateur associé au post
+    public function setUser($user){
+        $this->user = $user;
         return $this;
     }
 
-    /**
-     * Get the value of topic_id
-     */ 
-    public function getTopic_id(){
-        return $this->topic_id;
+    # Retourne le topic associé au post
+    public function getTopic(){
+        return $this->topic;
     }
 
-    /**
-     * Set the value of topic_id
-     *
-     * @return  self
-     */ 
-    public function setTopic_id($topic_id){
-        $this->topic_id = $topic_id;
+    # Définit le topic associé au post
+    public function setTopic($topic){
+        $this->topic = $topic;
         return $this;
     }
 
-    /**
-     * Get the value of creation_date
-     */ 
+    # Retourne la date de création du post
     public function getCreationDate(){
         return $this->creationDate;
     }
 
-    /**
-     * Set the value of creation_date
-     *
-     * @return  self
-     */ 
+    # Définit la date de création du post
     public function setCreationDate($creationDate){
         $this->creationDate = $creationDate;
         return $this;
     }
-    /**
-     * Get the value of content
-     */ 
+
+    # Retourne le contenu du post
     public function getContent(){
         return $this->content;
     }
 
-    /**
-     * Set the value of content
-     *
-     * @return  self
-     */ 
+    # Définit le contenu du post
     public function setContent($content){
         $this->content = $content;
         return $this;
     }
 
+    # Retourne l'id de l'utilisateur ou null si l'utilisateur n'est pas défini
+    public function getIdUser(){
+        return $this->user ? $this->user->getId() : null;
+    }
+
+    # Retourne l'id du topic ou null si le topic n'est pas défini
+    public function getIdTopic(){
+        return $this->topic ? $this->topic->getId() : null;
+    }
+
+    # Retourne le contenu du post lorsqu'il est traité comme une chaîne
     public function __toString(){
         return $this->content;
     }

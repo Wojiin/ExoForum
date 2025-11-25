@@ -1,69 +1,60 @@
 <?php
-# Récupère le topic et les posts depuis le résultat passé par le contrôleur
+# Récupère le topic et les posts envoyés par le contrôleur
 $topic = $result["data"]["topic"];
 $posts = $result["data"]["posts"];
-
-# Instancie UserManager pour récupérer les informations des utilisateurs
-use Model\Managers\UserManager;
-$userManager = new UserManager();
 ?>
 
 <h1><?= $topic->getTitle() ?></h1>
 
 <?php 
-# Boucle sur tous les posts du topic
-foreach($posts as $post){ 
+# Parcourt l'ensemble des posts du topic
+foreach($posts as $post): 
 
-    # Récupère l'utilisateur qui a posté
-    $user = $userManager->findOneById($post->getIdUser());
+    # Récupère l'utilisateur ayant publié ce post
+    $user = $post->getUser();
+?>
+    <br>
 
-    # Récupère le nom d'utilisateur
-    $username = $user->getUsername(); ?>        
-
-     <!-- Affiche l'auteur et la date du post -->
-    <br><h4>Par <a href="index.php?ctrl=security&action=showProfile&id=<?= $post->getIdUser() ?>">
-        <?= $username ?>
-    </a>
-    Posté le <?= $post->getCreationDate() ?></h4>
+    <!-- Affiche l'auteur du post avec sa date de publication -->
+    <h4>
+        Par 
+        <a href="index.php?ctrl=security&action=showProfile&id=<?= $user->getId() ?>">
+            <?= $user->getUsername() ?>
+        </a>
+        – Posté le <?= $post->getCreationDate() ?>
+    </h4>
 
     <!-- Affiche le contenu du post -->
-    <p><?= $post->getContent() ?></p><br>       
-<?php
+    <p><?= $post->getContent() ?></p><br>
 
-    if ($_SESSION['user']->getId() == $post->getIdUser()) {
-        ?> 
-<h3>Modifier ce post</h3>
-<!-- Formulaire pour modifier un post dans le topic -->
-<form action="index.php?ctrl=forum&action=updatePost&id=<?= $topic->getId(); ?>" method="post">
+    <?php 
+    # Vérifie que l'utilisateur connecté est l'auteur du post pour afficher le lien "Modifier"
+    if (App\Session::getUser() && App\Session::getUser()->getId() == $user->getId()): ?>
+        
+        # Lien vers le formulaire d'édition du post
+        <a href="index.php?ctrl=forum&action=editPost&id=<?= $post->getId() ?>">Modifier ce post</a>
 
-    <!-- Champ pour saisir le  nouveau contenu du post -->
-    <label for="content">Votre message :</label><br>
-    <textarea id="content" name="content"></textarea><br>
+    <?php endif; ?>
 
-    <!-- Bouton pour soumettre le formulaire -->
-    <button type="submit" name="submit">Envoyer</button>
-</form>
-<?php
-    }
-         
-}?><br>
-    
-<h2>Ajouter un nouveau post</h2>
+<?php endforeach; ?>
 
-<!-- Formulaire pour ajouter un post dans le topic -->
+<h3>Ajouter un post</h3>
+
+<!-- Formulaire pour ajouter un nouveau post -->
 <form action="index.php?ctrl=forum&action=addPost&id=<?= $topic->getId(); ?>" method="post">
 
     <!-- Champ pour saisir le contenu du post -->
     <label for="content">Votre message :</label><br>
     <textarea id="content" name="content"></textarea><br>
 
-    <!-- Bouton pour soumettre le formulaire -->
+    <!-- Bouton pour envoyer le formulaire -->
     <button type="submit" name="submit">Envoyer</button>
 </form>
 
+<br>
 
-
- <!-- Lien pour retourner à la liste des topics de la catégorie -->
-<a href="index.php?ctrl=forum&action=listTopicsByCategory&id=<?= $topic->getIdCategory() ?>">
+<!-- Lien pour revenir à la liste des topics de la catégorie -->
+<a href="index.php?ctrl=forum&action=listTopicsByCategory&id=<?= $topic->getCategory()->getId() ?>">
     Retour à la liste des topics
 </a>
+

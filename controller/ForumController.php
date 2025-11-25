@@ -1,35 +1,31 @@
 <?php
 
-# Déclare le namespace du contrôleur
+# Définit le namespace du contrôleur
 namespace Controller;
 
-# Importe les classes nécessaires pour la gestion de sessions et l'architecture MVC
+# Importe les classes nécessaires au fonctionnement du MVC
 use App\Session;
 use App\AbstractController;
 use App\ControllerInterface;
 
-# Importe les Managers pour interagir avec les tables correspondantes dans la base de données
+# Importe les managers associés aux tables du forum
 use Model\Managers\CategoryManager;
 use Model\Managers\TopicManager;
 use Model\Managers\PostManager;
 
-# Définition de la classe ForumController qui hérite d'AbstractController et implémente ControllerInterface
+# Contrôleur principal du forum
 class ForumController extends AbstractController implements ControllerInterface{
 
-    # Méthode pour afficher la page principale du forum avec la liste des catégories
+    # Affiche la page d'accueil du forum avec la liste des catégories
     public function index() {
         
-        # Crée une nouvelle instance du CategoryManager pour interagir avec la table 'category'
+        # Instancie CategoryManager pour récupérer les catégories
         $categoryManager = new CategoryManager();
 
-        # Récupère toutes les catégories de la base de données via la méthode findAll du manager
-        # Les catégories sont triées par nom dans l'ordre décroissant
+        # Récupère toutes les catégories triées par nom décroissant
         $categories = $categoryManager->findAll(["name", "DESC"]);
 
-        # Retourne un tableau associatif pour communiquer avec la vue
-        # - 'view' : chemin de la vue à charger
-        # - 'meta_description' : description utilisée pour le SEO
-        # - 'data' : tableau contenant les données à afficher dans la vue (ici la liste des catégories)
+        # Retourne les informations nécessaires à la vue
         return [
             "view" => VIEW_DIR."forum/listCategories.php",
             "meta_description" => "Liste des catégories du forum",
@@ -39,25 +35,20 @@ class ForumController extends AbstractController implements ControllerInterface{
         ];
     }
 
-    # Méthode pour afficher les topics d'une catégorie spécifique
+    # Affiche la liste des topics appartenant à une catégorie donnée
     public function listTopicsByCategory($id) {
 
-        # Crée une instance du TopicManager pour interagir avec la table 'topic'
+        # Instancie les managers nécessaires
         $topicManager = new TopicManager();
-
-        # Crée une instance du CategoryManager pour récupérer les informations de la catégorie
         $categoryManager = new CategoryManager();
 
-        # Récupère la catégorie correspondante à l'identifiant fourni
+        # Récupère la catégorie liée à l'id fourni
         $category = $categoryManager->findOneById($id);
 
-        # Récupère tous les topics associés à cette catégorie
+        # Récupère tous les topics de cette catégorie
         $topics = $topicManager->findTopicsByCategory($id);
 
-        # Retourne un tableau associatif pour la vue
-        # - 'view' : chemin de la vue pour lister les topics
-        # - 'meta_description' : description SEO pour la page des topics de cette catégorie
-        # - 'data' : données à passer à la vue (catégorie et topics)
+        # Envoie les données à la vue
         return [
             "view" => VIEW_DIR."forum/listTopics.php",
             "meta_description" => "Liste des topics par catégorie : ".$category,
@@ -68,25 +59,20 @@ class ForumController extends AbstractController implements ControllerInterface{
         ];
     }
 
-    # Méthode pour afficher les posts d'un topic spécifique
+    # Affiche tous les posts associés à un topic
     public function listPostsByTopic($id) {
 
-        # Crée une instance du TopicManager pour récupérer les informations du topic
+        # Instancie les managers nécessaires
         $topicManager = new TopicManager();
-
-        # Crée une instance du PostManager pour récupérer les posts liés au topic
         $postManager = new PostManager();
 
-        # Récupère les informations du topic correspondant à l'identifiant fourni
+        # Récupère le topic concerné
         $topic = $topicManager->findOneById($id);
 
-        # Récupère tous les posts associés à ce topic
+        # Récupère la liste des posts de ce topic
         $posts = $postManager->findPostsByTopic($id);
 
-        # Retourne un tableau associatif pour la vue
-        # - 'view' : chemin de la vue pour lister les posts
-        # - 'meta_description' : description SEO pour la page des posts de ce topic
-        # - 'data' : données à passer à la vue (topic et posts)
+        # Envoie les données à la vue
         return [
             "view" => VIEW_DIR."forum/listPosts.php",
             "meta_description" => "Liste des posts du topic : ".$topic,
@@ -97,35 +83,38 @@ class ForumController extends AbstractController implements ControllerInterface{
         ];
     }
 
-    # Méthode pour ajouter une catégorie
+    # Ajoute une nouvelle catégorie au forum
     public function addCategory(){
 
-    # Instancie CategoryManager pour gérer les catégories
-    $categoryManager = new CategoryManager();
+        $categoryManager = new CategoryManager();
 
-    # Vérifie si le formulaire d'ajout a été envoyé
-    if (isset($_POST['submit'])) {
+        # Vérifie si le formulaire a été soumis
+        if (isset($_POST['submit'])) {
 
-        # Récupère et filtre les valeurs envoyées depuis le formulaire pour contrer une faille XSS
-        $name = filter_input(INPUT_POST, "name", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
- 
-        # Vérifie que tous les champs sont remplis
-        if ($name) { 
-                # Ajout de la nouvelle catégorie dans la base
+            # Filtre le nom de la catégorie
+            $name = filter_input(INPUT_POST, "name", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+            # Vérifie que le champ est rempli
+            if ($name) {
+
+                # Ajoute la catégorie en base
                 $categoryManager->add([
                     "name" => $name
                 ]);
-                # Message de confirmation + redirection vers la liste des catégories
+
+                # Message de confirmation et redirection
                 $_SESSION["success"] = "Ajout réussi !";
                 header("Location: index.php?ctrl=forum&action=index");
                 exit;
+
             } else {
+                # Message si le champ est vide
                 $_SESSION["error"] = "Veuillez remplir le champ";
             }
         }
     }
 
-    # Méthode pour ajouter un topic
+    # Ajoute un nouveau topic dans une catégorie
     public function addTopic($id){
 
         $topicManager = new TopicManager();
@@ -134,113 +123,125 @@ class ForumController extends AbstractController implements ControllerInterface{
         # Vérifie si le formulaire a été soumis
         if (isset($_POST['submit'])) {
 
-            # Filtre le titre
+            # Filtre le titre du topic
             $title = filter_input(INPUT_POST, "title", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-            # Si le champ est rempli
-            if ($title) { 
-             
-                # Récupère l'utilisateur connecté
-                $user = \App\Session::getUser();
+            # Vérifie que le champ est rempli
+            if ($title) {
 
-                # Récupère la catégorie
+                # Récupère l'utilisateur connecté et la catégorie
+                $user = Session::getUser();
                 $category = $categoryManager->findOneById($id);
 
-                # Ajout en base
+                # Ajoute le topic en base
                 $topicManager->add([
-                    "title" => $title,
-                    "idCategory" => $category->getId(),     
-                    "idUser" => $user->getId()      
+                    "title"       => $title,
+                    "category_id" => $category->getId(),
+                    "user_id"     => $user->getId()
                 ]);
 
+                # Message et redirection
                 $_SESSION["success"] = "Ajout réussi !";
                 header("Location: index.php?ctrl=forum&action=listTopicsByCategory&id=".$id);
                 exit;
-            } 
-            # Si titre vide
-            else {
+
+            } else {
+                # Message si le champ est vide
                 $_SESSION["error"] = "Veuillez remplir le champ";
             }
         }
     }
 
-    # Méthode pour ajouter un post
+    # Ajoute un nouveau post dans un topic
     public function addPost($id) {
+
         $topicManager = new TopicManager();
         $postManager = new PostManager();
 
         # Vérifie si le formulaire a été soumis
         if (isset($_POST['submit'])) {
 
-            # Récupère et filtre le contenu du formulaire
+            # Filtre le contenu du post
             $content = filter_input(INPUT_POST, "content", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-            # Si le champ est rempli
+            # Vérifie que le contenu est valide
             if ($content) {
-                # Récupère l'utilisateur connecté
-                $user = \App\Session::getUser();
 
-                # Récupère le topic concerné
+                # Récupère l'utilisateur connecté et le topic
+                $user  = Session::getUser();
                 $topic = $topicManager->findOneById($id);
 
-                # Ajout en base
+                # Ajoute le post en base
                 $postManager->add([
-                    "content" => $content,
-                    "idUser" => $user->getId(),
-                    "idTopic" => $topic->getId()
+                    "content"  => $content,
+                    "user_id"  => $user->getId(),
+                    "topic_id" => $topic->getId()
                 ]);
 
-                # Message de confirmation + redirection vers le topic
+                # Message et redirection
                 $_SESSION["success"] = "Ajout réussi !";
                 header("Location: index.php?ctrl=forum&action=listPostsByTopic&id=".$topic->getId());
                 exit;
-            } 
-            # Si le champ est vide
-            else {
+
+            } else {
+                # Message si le champ n'est pas rempli
                 $_SESSION["error"] = "Veuillez remplir le champ";
             }
         }
     }
 
-    # Méthode pour mettre à jour un post
+    # Met à jour un post existant
     public function updatePost($id) {
 
-        # Instancie le PostManager pour accéder aux données des posts
+        # Instancie PostManager
         $postManager = new PostManager();
 
         # Récupère le post à modifier
         $post = $postManager->findOneById($id);
 
-        # Récupère l'id du topic pour la redirection après mise à jour
+        # Récupère l'id du topic associé pour la redirection
         $topicId = $post->getIdTopic();
 
         # Vérifie si le formulaire a été soumis
         if (isset($_POST['submit'])) {
 
-            # Filtre et sécurise le contenu envoyé
+            # Filtre le nouveau contenu du post
             $content = filter_input(INPUT_POST, "content", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-            # Si le contenu est valide
+            # Vérifie que le contenu n'est pas vide
             if ($content) {
 
-                # Met à jour le contenu du post en base de données
+                # Met à jour le post dans la base
                 $postManager->updateF([
                     "content" => $content
                 ], $id);
 
-                # Message de confirmation et redirection vers le topic
+                # Message et redirection
                 $_SESSION["success"] = "Mise à jour réussie !";
                 header("Location: index.php?ctrl=forum&action=listPostsByTopic&id=".$topicId);
                 exit;
 
             } else {
-                # Message d'erreur si le champ est vide
+                # Message si le contenu est vide
                 $_SESSION["error"] = "Le champ ne peut pas être vide !";
                 header("Location: index.php?ctrl=forum&action=listPostsByTopic&id=".$topicId);
                 exit;
             }
         }
     }
+public function editPost($id){
+
+    $postManager = new PostManager();
+    $post = $postManager->findOneById($id);
+
+    return [
+        "view" => VIEW_DIR."forum/editPost.php",
+        "meta_description" => "Modifier un post du forum",
+        "data" => [
+            "post" => $post,
+            "user" => $post->getUser()
+        ]
+    ];
+}
 
 }
-    

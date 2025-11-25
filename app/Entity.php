@@ -30,6 +30,9 @@ abstract class Entity{
                 // $this->setName("valeur")
                 $this->$method($value);
             }
+            else {
+                continue;
+            }
         }
     }
 

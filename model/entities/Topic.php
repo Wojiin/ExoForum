@@ -3,73 +3,109 @@ namespace Model\Entities;
 
 use App\Entity;
 
+# Entité représentant un topic du forum
 final class Topic extends Entity{
 
-    private $id_topic;
+    # Identifiant unique du topic
+    private $id;
+
+    # Titre du topic
     private $title;
-    private $user_id;
-    private $category_id;
+
+    # Relation vers l'utilisateur ayant créé le topic
+    private $user;
+
+    # Relation vers la catégorie du topic
+    private $category;
+
+    # Date de création du topic
     private $creationDate;
+
+    # Indique si le topic est fermé (0 ou 1)
     private $closed;
 
+    # Constructeur : hydrate l'objet avec les données fournies
     public function __construct($data){         
         $this->hydrate($data);        
     }
 
-    public function getId_topic(){
-        return $this->id_topic;
+    # Retourne l'id du topic
+    public function getId(){
+        return $this->id;
     }
 
-    public function setId_topic($id_topic){
-        $this->id_topic = $id_topic;
+    # Définit l'id du topic
+    public function setId($id){
+        $this->id = $id;
         return $this;
     }
 
+    # Retourne le titre du topic
     public function getTitle(){
         return $this->title;
     }
 
+    # Définit le titre du topic
     public function setTitle($title){
         $this->title = $title;
         return $this;
     }
 
-    public function getUser_id(){
-        return $this->user_id;
+    # Retourne l'utilisateur associé au topic
+    public function getUser(){
+        return $this->user;
     }
 
-    public function setUser_id($user_id){
-        $this->user_id = $user_id;
+    # Définit l'utilisateur associé au topic
+    public function setUser($user){
+        $this->user = $user;
         return $this;
     }
 
-    public function getCategory_id(){
-        return $this->category_id;
+    # Retourne la catégorie du topic
+    public function getCategory(){
+        return $this->category;
     }
 
-    public function setCategory_id($category_id){
-        $this->category_id = $category_id;
+    # Définit la catégorie du topic
+    public function setCategory($category){
+        $this->category = $category;
         return $this;
     }
 
+    # Retourne la date de création du topic
     public function getCreationDate(){
         return $this->creationDate;
     }
 
+    # Définit la date de création du topic
     public function setCreationDate($creationDate){
         $this->creationDate = $creationDate;
         return $this;
     }
 
+    # Retourne l'état de fermeture du topic
     public function getClosed(){
         return $this->closed;
     }
 
+    # Définit l'état de fermeture du topic
     public function setClosed($closed){
         $this->closed = $closed;
         return $this;
     }
 
+    # Retourne l'id de l'utilisateur ou null si non défini
+    public function getIdUser(){
+        return $this->user ? $this->user->getId() : null;
+    }
+
+    # Retourne l'id de la catégorie ou null si non défini
+    public function getIdCategory(){
+        return $this->category ? $this->category->getId() : null;
+    }
+
+    # Retourne le titre du topic lorsque l'objet est traité comme une chaîne
     public function __toString(){
         return $this->title;
     }
