@@ -31,10 +31,11 @@
                             // si l'utilisateur est connecté 
                             if(App\Session::getUser()){
                                 ?>
-                                <a href="index.php?ctrl=security&action=showProfile&id=<?= App\Session::getUser()->getId()?>"><span class="fas fa-user"></span>&nbsp;<?= App\Session::getUser()?></a>
-                                <a href="index.php?ctrl=security&action=logout">Déconnexion</a>
+                                <a href="index.php?ctrl=home">Accueil</a>                                
                                 <a href="index.php?ctrl=forum&action=index">Liste des catégories</a>
                                 <a href="index.php?ctrl=security&action=listUsers">Liste des utilisateurs</a>
+                                <a href="index.php?ctrl=security&action=logout">Déconnexion</a>
+                                <a href="index.php?ctrl=security&action=showProfile&id=<?= App\Session::getUser()->getId()?>"><span class="fas fa-user"></span>&nbsp;<?= App\Session::getUser()?></a>
                                 <?php
                             }
                             else{
@@ -53,7 +54,7 @@
                 </main>
             </div>
             <footer>
-                <p>&copy; <?= date_create("now")->format("Y") ?> - <a href="#">Règlement du forum</a> - <a href="#">Mentions légales</a></p>
+                <p>&copy; <?= date_create("now")->format("Y/m/d") ?> - <a href="#">Règlement du forum</a> - <a href="#">Mentions légales</a></p>
             </footer>
         </div>
         <script

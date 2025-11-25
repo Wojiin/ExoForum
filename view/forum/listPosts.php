@@ -5,39 +5,57 @@ $posts = $result["data"]["posts"];
 ?>
 
 <h1><?= $topic->getTitle() ?></h1>
-
+<div id="list">
 <?php 
-# Parcourt l'ensemble des posts du topic
-foreach($posts as $post): 
+if (!empty($posts)){
+    # Parcourt l'ensemble des posts du topic
+    foreach($posts as $post) {    
 
-    # Récupère l'utilisateur ayant publié ce post
-    $user = $post->getUser();
-?>
-    <br>
-
-    <!-- Affiche l'auteur du post avec sa date de publication -->
-    <h4>
-        Par 
-        <a href="index.php?ctrl=security&action=showProfile&id=<?= $user->getId() ?>">
-            <?= $user->getUsername() ?>
-        </a>
-        – Posté le <?= $post->getCreationDate() ?>
-    </h4>
-
-    <!-- Affiche le contenu du post -->
-    <p><?= $post->getContent() ?></p><br>
-
-    <?php 
-    # Vérifie que l'utilisateur connecté est l'auteur du post pour afficher le lien "Modifier"
-    if (App\Session::getUser() && App\Session::getUser()->getId() == $user->getId()): ?>
+        # Récupère l'utilisateur ayant publié ce post
+        $user = $post->getUser();
+        ?>
+        <br>
         
+        <div class="postContainer">
+        <!-- Affiche l'auteur du post avec sa date de publication -->
+        <h4>Par
+            <?php
+            if ($user){
+                ?>
+            <a href="index.php?ctrl=security&action=showProfile&id=<?= $user->getId() ?>">
+                <?= $user->getUsername() ?>
+            </a>
+            <?php
+            } else {
+                ?><p>Utilisateur supprimé !</p>
+                <?php
+            }
+                ?>
+            Posté le <?= $post->getCreationDate() 
+        ?>
+        </h4>
+
+        <!-- Affiche le contenu du post -->
+        <p><?= $post->getContent() ?></p></div>
+        <?php
+    # Vérifie que l'utilisateur connecté est l'auteur du post pour afficher le lien "Modifier"
+    if (App\Session::getUser() && App\Session::getUser()->getId() == $user->getId()) { 
+        ?>        
         <!-- Lien vers le formulaire d'édition du post -->
         <a href="index.php?ctrl=forum&action=editPost&id=<?= $post->getId() ?>">Modifier ce post</a>
+      
 
-    <?php endif; ?>
+    <?php
+        }
+    }
 
-<?php endforeach; ?>
 
+} else {
+    ?> <h4>Editez le premier post !</h4>
+<?php
+    }
+?>
+</div>
 <h3>Ajouter un post</h3>
 
 <!-- Formulaire pour ajouter un nouveau post -->

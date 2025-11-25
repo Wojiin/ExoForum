@@ -119,25 +119,32 @@ class ForumController extends AbstractController implements ControllerInterface{
 
         $topicManager = new TopicManager();
         $categoryManager = new CategoryManager();
+        $postManager = new PostManager();
 
         # Vérifie si le formulaire a été soumis
         if (isset($_POST['submit'])) {
 
             # Filtre le titre du topic
             $title = filter_input(INPUT_POST, "title", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $content = filter_input(INPUT_POST, "title", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
             # Vérifie que le champ est rempli
-            if ($title) {
+            if ($title && $content) {
 
                 # Récupère l'utilisateur connecté et la catégorie
                 $user = Session::getUser();
                 $category = $categoryManager->findOneById($id);
 
-                # Ajoute le topic en base
+                # Ajoute le titre en base
                 $topicManager->add([
                     "title"       => $title,
                     "category_id" => $category->getId(),
                     "user_id"     => $user->getId()
+                ]);
+                # Ajoute le contenu en base
+                $postManager->add([
+                    "content" => $content,
+                    "user_id" => $user->getId()
                 ]);
 
                 # Message et redirection

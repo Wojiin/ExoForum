@@ -4,7 +4,7 @@ $post = $result["data"]["post"];
 $user = $result["data"]["user"];
 ?>
 
-<h2>Modifier le post</h2>
+<h1>Modifier le post</h1>
 
 <!-- Formulaire permettant de modifier le contenu du post -->
 <form action="index.php?ctrl=forum&action=updatePost&id=<?= $post->getId() ?>" method="post">

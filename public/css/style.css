@@ -1,9 +1,117 @@
+/************** GENERAL************* */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-h1 {
-    color: rgb(0, 122, 156);
+#wrapper {
+    height: max-content;
+    background: radial-gradient(#2A3B4D, #1C2A38, #0F161D);
+    
 }
+
+#nav-right {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    height: 5vh;
+    
+}
+#nav-right > a {
+    font-size: x-large;
+    font-weight:bolder;
+}
+a {
+    text-decoration: none;
+    color: #bfddff;
+    transition: 0.5s;
+}
+
+a:hover {
+  color: #f6ad55;
+  text-shadow: 0 0 8px rgba(246, 173, 85, 0.4);
+}
+
+
+p, label {
+color : #4175AD;
+}
+
+#content {
+   color: #4892e0;
+   font-weight: 600; 
+}
+
+h1, h2 {
+    padding-bottom: 20px ;
+}
+
+h1, h2, h3, h4 {
+    color: #4892e0;
+    font-size: 900;
+}
+
+#list{
+    display: flex;
+    flex-direction: column;
+    overflow: scroll;
+    scrollbar-color: #1C2A38 #2A3B4D;
+    scrollbar-width: thin;
+    height: -webkit-fill-available;
+    width: -webkit-fill-available;
+}
+
+ul {
+    list-style: none;
+
+}
+
+
+footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;  
+    height: 5vh;
+}
+
+#forum {
+display: flex;
+flex-direction: column;
+align-items: center;
+font-size: larger;
+padding: 30px;
+height: 90vh;
+
+}
+
+/*************VUE PROFIL*************/
+#profilcontainer {
+    display: flex;
+    justify-content: space-between;
+    height: -webkit-fill-available;
+    
+    
+}
+.profil {
+
+width: 30%;
+overflow: scroll;
+scrollbar-color: #1C2A38 #2A3B4D;
+scrollbar-width: thin;
+
+}
+
+/*************VUE POST*************/
+#postsContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: scroll;
+    scrollbar-color: #1C2A38 #2A3B4D;
+    scrollbar-width: thin;   
+}
+
+
+
