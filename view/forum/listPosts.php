@@ -31,7 +31,7 @@ foreach($posts as $post):
     # Vérifie que l'utilisateur connecté est l'auteur du post pour afficher le lien "Modifier"
     if (App\Session::getUser() && App\Session::getUser()->getId() == $user->getId()): ?>
         
-        # Lien vers le formulaire d'édition du post
+        <!-- Lien vers le formulaire d'édition du post -->
         <a href="index.php?ctrl=forum&action=editPost&id=<?= $post->getId() ?>">Modifier ce post</a>
 
     <?php endif; ?>

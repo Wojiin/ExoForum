@@ -39,5 +39,5 @@ foreach($topics as $topic): ?>
 
 <br>
 
-<!-- # Lien de retour vers la liste des catégories -->
+<!-- Lien de retour vers la liste des catégories -->
 <a href="index.php?ctrl=forum&action=index">Retour aux catégories</a>
