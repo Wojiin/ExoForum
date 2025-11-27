@@ -19,8 +19,7 @@ Ce projet met en pratique :
 - la **programmation orientée objet**,  
 - le **pattern MVC**,  
 - la manipulation d’un **framework maison**,  
-- l’hydratation dynamique d’entités,  
-- les **relations SQL** (User / Topic / Post / Category).
+- l’hydratation dynamique d’entités,
 
 ---
 
@@ -60,7 +59,7 @@ Ce projet met en pratique :
 ---
 
 ### 🔐 Sécurité & bonnes pratiques  
-- Validation & sanitation via `filter_input()`  
+- Validation & nettoyage via `filter_input()`  
 - Vérification systématique des permissions  
 - Protection contre les injections SQL grâce à :  
   - l’usage de requêtes préparées PDO  
